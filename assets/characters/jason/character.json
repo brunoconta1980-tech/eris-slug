@@ -1,0 +1,78 @@
+{
+  "name": "jason",
+  "metadata": {
+    "displayName": "Jason (Bruto Implacável)",
+    "role": "Tanque Colossal",
+    "description": "Resistência desumana a explosões e lâminas pesadas devastadoras.",
+    "speed": 200,
+    "health": 200,
+    "jump": 420,
+    "signatureWeapon": "HEAVY SHOTGUN",
+    "color": "#f97316"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/jason/idle/frame_1.png",
+        "assets/characters/jason/idle/frame_2.png",
+        "assets/characters/jason/idle/frame_3.png",
+        "assets/characters/jason/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/jason/run/frame_1.png",
+        "assets/characters/jason/run/frame_2.png",
+        "assets/characters/jason/run/frame_3.png",
+        "assets/characters/jason/run/frame_4.png",
+        "assets/characters/jason/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/jason/jump/frame_1.png",
+        "assets/characters/jason/jump/frame_2.png",
+        "assets/characters/jason/jump/frame_3.png",
+        "assets/characters/jason/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/jason/shoot/frame_1.png",
+        "assets/characters/jason/shoot/frame_2.png",
+        "assets/characters/jason/shoot/frame_3.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/jason/die/frame_1.png",
+        "assets/characters/jason/die/frame_2.png",
+        "assets/characters/jason/die/frame_3.png",
+        "assets/characters/jason/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/jason/spritesheet.png"
+}

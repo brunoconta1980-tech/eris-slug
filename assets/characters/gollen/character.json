@@ -1,0 +1,77 @@
+{
+  "name": "gollen",
+  "metadata": {
+    "displayName": "Gollen (Golias de Pedra)",
+    "role": "Guardião Telúrico",
+    "description": "Dispara rochas maciças e provoca tremores no solo que atordoam inimigos.",
+    "speed": 180,
+    "health": 220,
+    "jump": 400,
+    "signatureWeapon": "ROCK CANNON",
+    "color": "#78716c"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/gollen/idle/frame_1.png",
+        "assets/characters/gollen/idle/frame_2.png",
+        "assets/characters/gollen/idle/frame_3.png",
+        "assets/characters/gollen/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/gollen/run/frame_1.png",
+        "assets/characters/gollen/run/frame_2.png",
+        "assets/characters/gollen/run/frame_3.png",
+        "assets/characters/gollen/run/frame_4.png",
+        "assets/characters/gollen/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/gollen/jump/frame_1.png",
+        "assets/characters/gollen/jump/frame_2.png",
+        "assets/characters/gollen/jump/frame_3.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/gollen/shoot/frame_1.png",
+        "assets/characters/gollen/shoot/frame_2.png",
+        "assets/characters/gollen/shoot/frame_3.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/gollen/die/frame_1.png",
+        "assets/characters/gollen/die/frame_2.png",
+        "assets/characters/gollen/die/frame_3.png",
+        "assets/characters/gollen/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/gollen/spritesheet.png"
+}

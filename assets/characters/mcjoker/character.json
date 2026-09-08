@@ -1,0 +1,79 @@
+{
+  "name": "mcjoker",
+  "metadata": {
+    "displayName": "McJoker (Agente do Caos)",
+    "role": "Terrorista Psicológico",
+    "description": "Granadas quicantes explosivas e tiros caóticos de alta dispersão.",
+    "speed": 260,
+    "health": 95,
+    "jump": 500,
+    "signatureWeapon": "BOUNCING BOMBS",
+    "color": "#ec4899"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/mcjoker/idle/frame_1.png",
+        "assets/characters/mcjoker/idle/frame_2.png",
+        "assets/characters/mcjoker/idle/frame_3.png",
+        "assets/characters/mcjoker/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/mcjoker/run/frame_1.png",
+        "assets/characters/mcjoker/run/frame_2.png",
+        "assets/characters/mcjoker/run/frame_3.png",
+        "assets/characters/mcjoker/run/frame_4.png",
+        "assets/characters/mcjoker/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/mcjoker/jump/frame_1.png",
+        "assets/characters/mcjoker/jump/frame_2.png",
+        "assets/characters/mcjoker/jump/frame_3.png",
+        "assets/characters/mcjoker/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/mcjoker/shoot/frame_1.png",
+        "assets/characters/mcjoker/shoot/frame_2.png",
+        "assets/characters/mcjoker/shoot/frame_3.png",
+        "assets/characters/mcjoker/shoot/frame_4.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/mcjoker/die/frame_1.png",
+        "assets/characters/mcjoker/die/frame_2.png",
+        "assets/characters/mcjoker/die/frame_3.png",
+        "assets/characters/mcjoker/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/mcjoker/spritesheet.png"
+}

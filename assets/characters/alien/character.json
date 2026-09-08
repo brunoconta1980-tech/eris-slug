@@ -1,0 +1,79 @@
+{
+  "name": "alien",
+  "metadata": {
+    "displayName": "Xeno (Invasor Cósmico)",
+    "role": "Biólogo Alienígena",
+    "description": "Gravidade modificada e disparos de plasma desintegrador que atravessam inimigos.",
+    "speed": 230,
+    "health": 100,
+    "jump": 510,
+    "signatureWeapon": "PLASMA BEAM",
+    "color": "#22c55e"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/alien/idle/frame_1.png",
+        "assets/characters/alien/idle/frame_2.png",
+        "assets/characters/alien/idle/frame_3.png",
+        "assets/characters/alien/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/alien/run/frame_1.png",
+        "assets/characters/alien/run/frame_2.png",
+        "assets/characters/alien/run/frame_3.png",
+        "assets/characters/alien/run/frame_4.png",
+        "assets/characters/alien/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/alien/jump/frame_1.png",
+        "assets/characters/alien/jump/frame_2.png",
+        "assets/characters/alien/jump/frame_3.png",
+        "assets/characters/alien/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/alien/shoot/frame_1.png",
+        "assets/characters/alien/shoot/frame_2.png",
+        "assets/characters/alien/shoot/frame_3.png",
+        "assets/characters/alien/shoot/frame_4.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/alien/die/frame_1.png",
+        "assets/characters/alien/die/frame_2.png",
+        "assets/characters/alien/die/frame_3.png",
+        "assets/characters/alien/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/alien/spritesheet.png"
+}

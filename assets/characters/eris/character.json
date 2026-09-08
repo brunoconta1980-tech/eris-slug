@@ -1,0 +1,78 @@
+{
+  "name": "eris",
+  "metadata": {
+    "displayName": "Eris (Comandante Tática)",
+    "role": "Líder de Operações Especiais",
+    "description": "Equilíbrio tático perfeito com cadência de tiro acelerada e agilidade militar.",
+    "speed": 240,
+    "health": 120,
+    "jump": 480,
+    "signatureWeapon": "HEAVY MACHINE GUN",
+    "color": "#38bdf8"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/eris/idle/frame_1.png",
+        "assets/characters/eris/idle/frame_2.png",
+        "assets/characters/eris/idle/frame_3.png",
+        "assets/characters/eris/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/eris/run/frame_1.png",
+        "assets/characters/eris/run/frame_2.png",
+        "assets/characters/eris/run/frame_3.png",
+        "assets/characters/eris/run/frame_4.png",
+        "assets/characters/eris/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/eris/jump/frame_1.png",
+        "assets/characters/eris/jump/frame_2.png",
+        "assets/characters/eris/jump/frame_3.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/eris/shoot/frame_1.png",
+        "assets/characters/eris/shoot/frame_2.png",
+        "assets/characters/eris/shoot/frame_3.png",
+        "assets/characters/eris/shoot/frame_4.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/eris/die/frame_1.png",
+        "assets/characters/eris/die/frame_2.png",
+        "assets/characters/eris/die/frame_3.png",
+        "assets/characters/eris/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/eris/spritesheet.png"
+}

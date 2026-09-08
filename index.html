@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ERIS SLUG: Principia Discordia</title>
+    <meta name="description" content="ERIS SLUG: Principia Discordia — Clone estrutural de Metal Slug 5 com tema e lore Discordianista. 5 missões, chefes, armas sagradas e Apple Slug.">
+    <meta name="theme-color" content="#0a0014">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍎</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google AdSense Oficial -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1577729186330567" crossorigin="anonymous"></script>
+    <script src="js/ad-config.js"></script>
+    <script src="assets/vendor/phaser.min.js"></script>
+    <script>
+        if (typeof Phaser === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"><\/script>');
+        }
+    </script>
+</head>
+<body>
+    <header class="header-bar">
+        <div class="title-logo">
+            <span class="apple-icon">🍎</span>
+            <div>
+                <h1 class="game-title">ERIS SLUG</h1>
+                <span class="badge-seasons">PRINCIPIA DISCORDIA · 5 MISSÕES · WEBGL</span>
+            </div>
+        </div>
+        <div class="top-buttons">
+            <button class="btn-retro" id="btn-oracle">✨ ORÁCULO</button>
+            <button class="btn-retro" id="btn-crt">📺 CRT</button>
+            <button class="btn-retro" id="btn-sound">🔊 SOM</button>
+            <button class="btn-retro" id="btn-fullscreen">⛶ TELA CHEIA</button>
+        </div>
+    </header>
+
+    <!-- Bloco de Anúncio Google AdSense na Tela Inicial -->
+    <div class="ad-banner-container" id="ad-banner-top">
+        <div class="ad-disclaimer">PUBLICIDADE · ANÚNCIO</div>
+        <div class="ad-slot-box" id="ad-home-slot">
+            <ins class="adsbygoogle"
+                 style="display:block; min-height:90px;"
+                 data-ad-client="ca-pub-1577729186330567"
+                 data-ad-slot="5303658379"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+        </div>
+    </div>
+
+    <main class="game-wrapper" id="game-wrapper">
+        <div id="game-canvas-container"></div>
+        <div class="crt-overlay" id="crt-overlay"></div>
+    </main>
+
+    <section class="controls-panel">
+        <div class="control-box">
+            <h4>MOVIMENTO</h4>
+            <p><span class="key-tag">← →</span> Andar · <span class="key-tag">↑</span> Mirar cima</p>
+            <p><span class="key-tag">↓</span> Agachar · <span class="key-tag">ESPAÇO / C</span> Pular</p>
+        </div>
+        <div class="control-box">
+            <h4>COMBATE</h4>
+            <p><span class="key-tag">Z / J</span> Atirar (8 direções) / melee</p>
+            <p><span class="key-tag">X / K</span> Granada · <span class="key-tag">P</span> Pausa</p>
+        </div>
+        <div class="control-box">
+            <h4>ARMAS SAGRADAS</h4>
+            <p>Pistola ∞ · HMG · Shotgun · Foguete · Chama · Laser · Fnord</p>
+            <p>Quebre caixas POW e resgate Papas Discordianos.</p>
+        </div>
+        <div class="control-box">
+            <h4>5 MISSÕES</h4>
+            <p>M1 Cidade do Caos — Gollen</p>
+            <p>M2 Selva — TV-Man · M3 Muralha — Cyber-01</p>
+            <p>M4 Submarino — Cthulhu · M5 Sanctum — Dark Spirit</p>
+        </div>
+    </section>
+
+    <div class="touch-controls">
+        <div class="d-pad">
+            <button class="touch-btn" id="t-left">◀</button>
+            <button class="touch-btn" id="t-down">▼</button>
+            <button class="touch-btn" id="t-up">▲</button>
+            <button class="touch-btn" id="t-right">▶</button>
+        </div>
+        <div class="action-buttons">
+            <button class="touch-btn" id="t-gren" style="background:#78350f;">●</button>
+            <button class="touch-btn" id="t-shoot" style="background:#b45309;">Z</button>
+            <button class="touch-btn" id="t-jump" style="background:#1e3a8a;">▲</button>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/boot.js"></script>
+    <script src="js/menus.js"></script>
+    <script src="js/play.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        const crt = document.getElementById('crt-overlay');
+        document.getElementById('btn-crt').addEventListener('click', () => {
+            crt.style.display = crt.style.display === 'none' ? 'block' : 'none';
+        });
+        document.getElementById('btn-sound').addEventListener('click', function () {
+            const m = !window.retroAudio.isMuted();
+            window.retroAudio.setMute(m);
+            this.textContent = m ? '🔇 MUDO' : '🔊 SOM';
+        });
+        document.getElementById('btn-fullscreen').addEventListener('click', () => {
+            const el = document.getElementById('game-wrapper');
+            if (!document.fullscreenElement) el.requestFullscreen().catch(() => {});
+            else document.exitFullscreen();
+        });
+        document.getElementById('btn-oracle').addEventListener('click', () => {
+            const list = (typeof ORACLE !== 'undefined' && ORACLE.length) ? ORACLE : [
+                { q: "Convence um homem de uma mentira e ele a defenderá pelo resto da vida.", r: "Principia Discordia" },
+                { q: "O Sagrado Chao não é o Yin-Yang. É o Yin-Yang com um pentágono e uma maçã. Preste atenção.", r: "Malaclypse the Younger" },
+                { q: "Cinco toneladas de linho.", r: "The Law of Fives" },
+                { q: "Greyface ensinou que ordem é verdadeira e caos é falso. Greyface é um palhaço triste.", r: "Curse of Greyface" },
+                { q: "Todo homem, mulher e criança neste planeta é um Papa Discordiano.", r: "Principia Discordia · pg. 00004" },
+                { q: "Fnord.", r: "Illuminatus!" },
+                { q: "Kallisti — para a mais bela.", r: "A Maçã Dourada" },
+                { q: "Se o telefone tocar, não atenda. É a Discórdia cobrando o aluguel.", r: "Oráculo de Eris" },
+                { q: "A hot dog é o sacramento de sexta-feira. Honre o pão e o caos.", r: "Hot Dog Day" },
+                { q: "Não há deusa além de Eris, e Ela é a sua Deusa.", r: "Principia Discordia" },
+                { q: "23. Sempre 23.", r: "Law of Fives" },
+                { q: "A pineal não é uma glândula. É uma janela.", r: "Hagbard Celine" }
+            ];
+            const item = list[Math.floor(Math.random() * list.length)];
+            alert('✦ ORÁCULO DE ERIS ✦\n\n"' + (item.quote || item.q) + '"\n\n— ' + (item.ref || item.r));
+        });
+        window.addEventListener('load', () => {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.warn('Google AdSense:', e);
+            }
+        });
+        function bindTouch(id, code) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const down = () => window.dispatchEvent(new KeyboardEvent('keydown', { code, keyCode: 0, bubbles: true }));
+            const up = () => window.dispatchEvent(new KeyboardEvent('keyup', { code, keyCode: 0, bubbles: true }));
+            el.addEventListener('touchstart', e => { e.preventDefault(); down(); });
+            el.addEventListener('touchend', e => { e.preventDefault(); up(); });
+            el.addEventListener('mousedown', down);
+            el.addEventListener('mouseup', up);
+        }
+        bindTouch('t-left', 'ArrowLeft');
+        bindTouch('t-right', 'ArrowRight');
+        bindTouch('t-down', 'ArrowDown');
+        bindTouch('t-up', 'ArrowUp');
+        bindTouch('t-jump', 'Space');
+        bindTouch('t-shoot', 'KeyZ');
+        bindTouch('t-gren', 'KeyX');
+    </script>
+</body>
+</html>

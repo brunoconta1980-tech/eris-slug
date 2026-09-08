@@ -1,0 +1,78 @@
+{
+  "name": "viper",
+  "metadata": {
+    "displayName": "Viper (Comando Tóxico)",
+    "role": "Especialista Químico",
+    "description": "Projéteis venenosos de fragmentação rápida que corroem blindagens rebeldes.",
+    "speed": 250,
+    "health": 105,
+    "jump": 490,
+    "signatureWeapon": "ACID SPRAYER",
+    "color": "#84cc16"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/viper/idle/frame_1.png",
+        "assets/characters/viper/idle/frame_2.png",
+        "assets/characters/viper/idle/frame_3.png",
+        "assets/characters/viper/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/viper/run/frame_1.png",
+        "assets/characters/viper/run/frame_2.png",
+        "assets/characters/viper/run/frame_3.png",
+        "assets/characters/viper/run/frame_4.png",
+        "assets/characters/viper/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/viper/jump/frame_1.png",
+        "assets/characters/viper/jump/frame_2.png",
+        "assets/characters/viper/jump/frame_3.png",
+        "assets/characters/viper/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/viper/shoot/frame_1.png",
+        "assets/characters/viper/shoot/frame_2.png",
+        "assets/characters/viper/shoot/frame_3.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/viper/die/frame_1.png",
+        "assets/characters/viper/die/frame_2.png",
+        "assets/characters/viper/die/frame_3.png",
+        "assets/characters/viper/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/viper/spritesheet.png"
+}

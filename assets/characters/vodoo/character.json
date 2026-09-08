@@ -1,0 +1,78 @@
+{
+  "name": "vodoo",
+  "metadata": {
+    "displayName": "Voodoo (Xamã dos Ossos)",
+    "role": "Necro-Engenheiro",
+    "description": "Dispara crânios amaldiçoados que perseguem os alvos com fogo verde.",
+    "speed": 225,
+    "health": 110,
+    "jump": 475,
+    "signatureWeapon": "HOMING SKULLS",
+    "color": "#10b981"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/vodoo/idle/frame_1.png",
+        "assets/characters/vodoo/idle/frame_2.png",
+        "assets/characters/vodoo/idle/frame_3.png",
+        "assets/characters/vodoo/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/vodoo/run/frame_1.png",
+        "assets/characters/vodoo/run/frame_2.png",
+        "assets/characters/vodoo/run/frame_3.png",
+        "assets/characters/vodoo/run/frame_4.png",
+        "assets/characters/vodoo/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/vodoo/jump/frame_1.png",
+        "assets/characters/vodoo/jump/frame_2.png",
+        "assets/characters/vodoo/jump/frame_3.png",
+        "assets/characters/vodoo/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/vodoo/shoot/frame_1.png",
+        "assets/characters/vodoo/shoot/frame_2.png",
+        "assets/characters/vodoo/shoot/frame_3.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/vodoo/die/frame_1.png",
+        "assets/characters/vodoo/die/frame_2.png",
+        "assets/characters/vodoo/die/frame_3.png",
+        "assets/characters/vodoo/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/vodoo/spritesheet.png"
+}

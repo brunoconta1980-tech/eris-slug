@@ -1,0 +1,78 @@
+{
+  "name": "chtulu",
+  "metadata": {
+    "displayName": "Cthulhu (Arauto do Abismo)",
+    "role": "Entidade Cósmica",
+    "description": "Tentáculos místicos e orbes sombrios de pura destruição primordial.",
+    "speed": 210,
+    "health": 160,
+    "jump": 480,
+    "signatureWeapon": "ABYSS ORB",
+    "color": "#14b8a6"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/chtulu/idle/frame_1.png",
+        "assets/characters/chtulu/idle/frame_2.png",
+        "assets/characters/chtulu/idle/frame_3.png",
+        "assets/characters/chtulu/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/chtulu/run/frame_1.png",
+        "assets/characters/chtulu/run/frame_2.png",
+        "assets/characters/chtulu/run/frame_3.png",
+        "assets/characters/chtulu/run/frame_4.png",
+        "assets/characters/chtulu/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/chtulu/jump/frame_1.png",
+        "assets/characters/chtulu/jump/frame_2.png",
+        "assets/characters/chtulu/jump/frame_3.png",
+        "assets/characters/chtulu/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/chtulu/shoot/frame_1.png",
+        "assets/characters/chtulu/shoot/frame_2.png",
+        "assets/characters/chtulu/shoot/frame_3.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/chtulu/die/frame_1.png",
+        "assets/characters/chtulu/die/frame_2.png",
+        "assets/characters/chtulu/die/frame_3.png",
+        "assets/characters/chtulu/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/chtulu/spritesheet.png"
+}

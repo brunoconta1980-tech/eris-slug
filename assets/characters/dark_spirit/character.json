@@ -1,0 +1,78 @@
+{
+  "name": "dark_spirit",
+  "metadata": {
+    "displayName": "Dark Spirit (Espectro Sombrio)",
+    "role": "Fantasma Ectoplásmico",
+    "description": "Faseamento translúcido e projéteis espectrais que perfuram armaduras.",
+    "speed": 270,
+    "health": 85,
+    "jump": 530,
+    "signatureWeapon": "SPECTRAL BLAST",
+    "color": "#8b5cf6"
+  },
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "files": [
+        "assets/characters/dark_spirit/idle/frame_1.png",
+        "assets/characters/dark_spirit/idle/frame_2.png",
+        "assets/characters/dark_spirit/idle/frame_3.png",
+        "assets/characters/dark_spirit/idle/frame_4.png"
+      ]
+    },
+    "run": {
+      "row": 1,
+      "frameCount": 5,
+      "frameRate": 12,
+      "repeat": -1,
+      "files": [
+        "assets/characters/dark_spirit/run/frame_1.png",
+        "assets/characters/dark_spirit/run/frame_2.png",
+        "assets/characters/dark_spirit/run/frame_3.png",
+        "assets/characters/dark_spirit/run/frame_4.png",
+        "assets/characters/dark_spirit/run/frame_5.png"
+      ]
+    },
+    "jump": {
+      "row": 2,
+      "frameCount": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/dark_spirit/jump/frame_1.png",
+        "assets/characters/dark_spirit/jump/frame_2.png",
+        "assets/characters/dark_spirit/jump/frame_3.png",
+        "assets/characters/dark_spirit/jump/frame_4.png"
+      ]
+    },
+    "shoot": {
+      "row": 3,
+      "frameCount": 3,
+      "frameRate": 12,
+      "repeat": 0,
+      "files": [
+        "assets/characters/dark_spirit/shoot/frame_1.png",
+        "assets/characters/dark_spirit/shoot/frame_2.png",
+        "assets/characters/dark_spirit/shoot/frame_3.png"
+      ]
+    },
+    "die": {
+      "row": 4,
+      "frameCount": 4,
+      "frameRate": 8,
+      "repeat": 0,
+      "files": [
+        "assets/characters/dark_spirit/die/frame_1.png",
+        "assets/characters/dark_spirit/die/frame_2.png",
+        "assets/characters/dark_spirit/die/frame_3.png",
+        "assets/characters/dark_spirit/die/frame_4.png"
+      ]
+    }
+  },
+  "spritesheet": "assets/characters/dark_spirit/spritesheet.png"
+}
