@@ -7,7 +7,7 @@
     <meta name="description" content="ERIS SLUG: Principia Discordia — Clone estrutural de Metal Slug 5 com tema e lore Discordianista. 5 missões, chefes, armas sagradas e Apple Slug.">
     <meta name="theme-color" content="#0a0014">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍎</text></svg>">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=5.24.0">
     <!-- Google AdSense Oficial -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1577729186330567" crossorigin="anonymous"></script>
     <script src="js/ad-config.js"></script>
@@ -32,22 +32,26 @@
             <button class="btn-retro" id="btn-crt">📺 CRT</button>
             <button class="btn-retro" id="btn-sound">🔊 SOM</button>
             <button class="btn-retro" id="btn-touch-toggle">🎮 CONTROLES</button>
+            <button class="btn-retro" id="btn-frame">📐 ENQUADRAR</button>
+            <button class="btn-retro" id="btn-pause-header">⏸ PAUSA</button>
             <button class="btn-retro" id="btn-fullscreen">⛶ TELA CHEIA</button>
         </div>
     </header>
 
-    <!-- Bloco de Anúncio Google AdSense na Tela Inicial -->
-    <div class="ad-banner-container" id="ad-banner-top">
-        <div class="ad-disclaimer">PUBLICIDADE · ANÚNCIO</div>
-        <div class="ad-slot-box" id="ad-home-slot">
+    <!-- Popup de Publicidade Compacto (AdSense) -->
+    <aside class="ad-popup-modal" id="ad-popup-modal">
+        <div class="ad-popup-header">
+            <span class="ad-popup-tag">✦ PUBLICIDADE ✦</span>
+            <button class="ad-popup-close" id="btn-close-ad" aria-label="Fechar Anúncio">✕ FECHAR</button>
+        </div>
+        <div class="ad-popup-body">
             <ins class="adsbygoogle"
-                 style="display:block; min-height:90px;"
+                 style="display:inline-block; width:260px; height:60px;"
                  data-ad-client="ca-pub-1577729186330567"
                  data-ad-slot="5303658379"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
+                 data-ad-format="horizontal"></ins>
         </div>
-    </div>
+    </aside>
 
     <main class="game-wrapper" id="game-wrapper">
         <div id="game-canvas-container"></div>
@@ -57,7 +61,7 @@
     <section class="controls-panel">
         <div class="control-box">
             <h4>MOVIMENTO</h4>
-            <p><span class="key-tag">← →</span> Andar · <span class="key-tag">↑</span> Mirar cima</p>
+            <p><span class="key-tag">← →</span> Andar · <span class="key-tag">↑</span> Mirar cima / Pular</p>
             <p><span class="key-tag">↓</span> Agachar · <span class="key-tag">ESPAÇO / C</span> Pular</p>
         </div>
         <div class="control-box">
@@ -79,33 +83,36 @@
     </section>
 
     <div class="touch-controls" id="touch-controls">
-        <div class="dpad-cluster" id="dpad-cluster">
-            <button class="touch-btn dpad-btn" id="t-up" data-action="up" aria-label="Cima">▲</button>
-            <div class="dpad-middle-row">
-                <button class="touch-btn dpad-btn" id="t-left" data-action="left" aria-label="Esquerda">◀</button>
-                <div class="dpad-center"></div>
-                <button class="touch-btn dpad-btn" id="t-right" data-action="right" aria-label="Direita">▶</button>
+        <!-- Direcional em Cruz Padrão -->
+        <div class="dpad-cross" id="dpad-cross">
+            <button class="dpad-arm dpad-up" id="t-up" data-action="up" aria-label="Cima / Pular">▲</button>
+            <div class="dpad-horizontal-row">
+                <button class="dpad-arm dpad-left" id="t-left" data-action="left" aria-label="Esquerda">◀</button>
+                <div class="dpad-center" id="dpad-center"></div>
+                <button class="dpad-arm dpad-right" id="t-right" data-action="right" aria-label="Direita">▶</button>
             </div>
-            <button class="touch-btn dpad-btn" id="t-down" data-action="down" aria-label="Baixo">▼</button>
+            <button class="dpad-arm dpad-down" id="t-down" data-action="down" aria-label="Baixo / Agachar">▼</button>
         </div>
+
+        <!-- Apenas Dois Botões: Z (Tiro) e Bomba -->
         <div class="action-cluster" id="action-cluster">
-            <div class="action-top-row">
-                <button class="touch-btn action-sub-btn" id="t-pause" data-action="pause" aria-label="Pausar">⏸</button>
-                <button class="touch-btn action-gren-btn" id="t-gren" data-action="gren" aria-label="Granada">●</button>
-            </div>
-            <div class="action-main-row">
-                <button class="touch-btn action-shoot-btn" id="t-shoot" data-action="shoot" aria-label="Atirar">Z</button>
-                <button class="touch-btn action-jump-btn" id="t-jump" data-action="jump" aria-label="Pular">▲</button>
-            </div>
+            <button class="touch-action-btn btn-bomb" id="t-gren" data-action="gren" aria-label="Bomba">
+                <span class="btn-main-icon">💣</span>
+                <span class="btn-text-sub">BOMBA</span>
+            </button>
+            <button class="touch-action-btn btn-shoot" id="t-shoot" data-action="shoot" aria-label="Atirar (Z)">
+                <span class="btn-main-icon">Z</span>
+                <span class="btn-text-sub">TIRO</span>
+            </button>
         </div>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/audio.js"></script>
-    <script src="js/boot.js"></script>
-    <script src="js/menus.js"></script>
-    <script src="js/play.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/config.js?v=5.24.0"></script>
+    <script src="js/audio.js?v=5.24.0"></script>
+    <script src="js/boot.js?v=5.24.0"></script>
+    <script src="js/menus.js?v=5.24.0"></script>
+    <script src="js/play.js?v=5.24.0"></script>
+    <script src="js/main.js?v=5.24.0"></script>
     <script>
         const crt = document.getElementById('crt-overlay');
         document.getElementById('btn-crt').addEventListener('click', () => {
@@ -176,6 +183,7 @@
         // Global Virtual Input State
         const erisVirtualInput = {
             up: false,
+            upPress: false,
             down: false,
             left: false,
             right: false,
@@ -238,8 +246,12 @@
             const prev = !!erisVirtualInput[action];
             erisVirtualInput[action] = isDown;
 
-            if (action === 'jump' && isDown && !prev) {
-                erisVirtualInput.jumpPress = true;
+            if (action === 'up') {
+                if (isDown && !prev) {
+                    erisVirtualInput.upPress = true;
+                    erisVirtualInput.jumpPress = true;
+                }
+                erisVirtualInput.jump = isDown;
             }
             if (action === 'gren' && isDown && !prev) {
                 erisVirtualInput.grenPress = true;
@@ -249,13 +261,16 @@
                 const h = window.currentPlayScene.hold;
                 if (action === 'left') h.l = isDown;
                 if (action === 'right') h.r = isDown;
-                if (action === 'up') h.u = isDown;
-                if (action === 'down') h.d = isDown;
-                if (action === 'shoot') h.sh = isDown;
-                if (action === 'jump') {
-                    if (isDown && !h.jp) h.jpPress = true;
+                if (action === 'up') {
+                    h.u = isDown;
+                    if (isDown && !h.jp) {
+                        h.jpPress = true;
+                        h.uPress = true;
+                    }
                     h.jp = isDown;
                 }
+                if (action === 'down') h.d = isDown;
+                if (action === 'shoot') h.sh = isDown;
                 if (action === 'gren') {
                     if (isDown && !h.gr) h.grPress = true;
                     h.gr = isDown;
@@ -265,6 +280,9 @@
             const mapping = KEY_MAP[action];
             if (mapping) {
                 triggerKeyEvent(isDown ? 'keydown' : 'keyup', mapping);
+            }
+            if (action === 'up') {
+                triggerKeyEvent(isDown ? 'keydown' : 'keyup', KEY_MAP.jump);
             }
         }
 
@@ -301,9 +319,123 @@
             });
         }
 
-        ['up', 'down', 'left', 'right', 'shoot', 'jump', 'gren', 'pause'].forEach(act => {
-            bindVirtualButton('t-' + act, act);
+        // Bind cross D-Pad individual arms
+        ['up', 'down', 'left', 'right'].forEach(dir => {
+            bindVirtualButton('t-' + dir, dir);
         });
+
+        // Continuous thumb drag on standard cross D-Pad
+        const dpadCross = document.getElementById('dpad-cross');
+        let dpadTouchId = null;
+
+        function updateDpadCoords(clientX, clientY) {
+            if (!dpadCross) return;
+            const rect = dpadCross.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = clientX - cx;
+            const dy = clientY - cy;
+            const dist = Math.hypot(dx, dy);
+
+            let up = false, down = false, left = false, right = false;
+            if (dist > 14) {
+                const deg = Math.atan2(dy, dx) * (180 / Math.PI);
+                if (deg >= -67.5 && deg <= 67.5) right = true;
+                if (deg >= 22.5 && deg <= 157.5) down = true;
+                if (deg <= -22.5 && deg >= -157.5) up = true;
+                if (deg >= 112.5 || deg <= -112.5) left = true;
+            }
+
+            setActionState('up', up);
+            setActionState('down', down);
+            setActionState('left', left);
+            setActionState('right', right);
+
+            document.getElementById('t-up')?.classList.toggle('active', up);
+            document.getElementById('t-down')?.classList.toggle('active', down);
+            document.getElementById('t-left')?.classList.toggle('active', left);
+            document.getElementById('t-right')?.classList.toggle('active', right);
+        }
+
+        function resetDpadTouch() {
+            setActionState('up', false);
+            setActionState('down', false);
+            setActionState('left', false);
+            setActionState('right', false);
+            document.getElementById('t-up')?.classList.remove('active');
+            document.getElementById('t-down')?.classList.remove('active');
+            document.getElementById('t-left')?.classList.remove('active');
+            document.getElementById('t-right')?.classList.remove('active');
+            dpadTouchId = null;
+        }
+
+        if (dpadCross) {
+            dpadCross.addEventListener('pointerdown', (e) => {
+                try { dpadCross.setPointerCapture(e.pointerId); } catch (_) {}
+                dpadTouchId = e.pointerId;
+                updateDpadCoords(e.clientX, e.clientY);
+            });
+            dpadCross.addEventListener('pointermove', (e) => {
+                if (dpadTouchId !== null && e.pointerId === dpadTouchId) {
+                    updateDpadCoords(e.clientX, e.clientY);
+                }
+            });
+            dpadCross.addEventListener('pointerup', (e) => {
+                if (e.pointerId === dpadTouchId) resetDpadTouch();
+            });
+            dpadCross.addEventListener('pointercancel', resetDpadTouch);
+        }
+
+        // Action Buttons: Shoot (Z) and Bomba
+        bindVirtualButton('t-shoot', 'shoot');
+        bindVirtualButton('t-gren', 'gren');
+
+        // Ad Popup Close button
+        const btnCloseAd = document.getElementById('btn-close-ad');
+        const adModal = document.getElementById('ad-popup-modal');
+        if (btnCloseAd && adModal) {
+            btnCloseAd.addEventListener('click', () => {
+                adModal.style.display = 'none';
+            });
+        }
+
+        // Header Pause Button
+        const btnPauseHdr = document.getElementById('btn-pause-header');
+        if (btnPauseHdr) {
+            btnPauseHdr.addEventListener('click', () => {
+                setActionState('pause', true);
+            });
+        }
+
+        // Header Frame / Enquadrar Button
+        function frameGame() {
+            const gw = document.getElementById('game-wrapper');
+            if (gw) {
+                gw.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (window.erisGame && window.erisGame.scale) {
+                window.erisGame.scale.refresh();
+            }
+        }
+        document.getElementById('btn-frame')?.addEventListener('click', frameGame);
+
+        // Auto Refresh Scale and Framing on orientationchange and resize
+        function refreshScale() {
+            if (window.erisGame && window.erisGame.scale) {
+                window.erisGame.scale.refresh();
+            }
+        }
+        window.addEventListener('resize', refreshScale);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(refreshScale, 150);
+            setTimeout(refreshScale, 400);
+        });
+        if (screen.orientation && screen.orientation.addEventListener) {
+            screen.orientation.addEventListener('change', () => {
+                setTimeout(refreshScale, 150);
+                setTimeout(refreshScale, 400);
+            });
+        }
 
         // WebAudio unlock on first user gesture
         const unlockAudio = () => {

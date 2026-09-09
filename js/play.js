@@ -462,9 +462,9 @@ class PlayScene extends Phaser.Scene {
     const right = this.isDown('right');
     const up = this.isDown('up');
     const down = this.isDown('down');
-    const jumpDown = (h && h.jpPress) || (v && v.jumpPress) || (k && k.jump && Phaser.Input.Keyboard.JustDown(k.jump)) || (k && k.jump2 && Phaser.Input.Keyboard.JustDown(k.jump2));
-    if (h) h.jpPress = false;
-    if (v) v.jumpPress = false;
+    const jumpDown = (h && (h.jpPress || h.uPress)) || (v && (v.jumpPress || v.upPress)) || (k && k.jump && Phaser.Input.Keyboard.JustDown(k.jump)) || (k && k.jump2 && Phaser.Input.Keyboard.JustDown(k.jump2));
+    if (h) { h.jpPress = false; h.uPress = false; }
+    if (v) { v.jumpPress = false; v.upPress = false; }
     const shoot = this.isDown('shoot');
     const gren = (h && h.grPress) || (v && v.grenPress) || (k && k.gren && Phaser.Input.Keyboard.JustDown(k.gren)) || (k && k.gren2 && Phaser.Input.Keyboard.JustDown(k.gren2));
     if (h) h.grPress = false;
@@ -534,7 +534,7 @@ class PlayScene extends Phaser.Scene {
       this._spawnBullet(WEAPONS.rocket, s.x + this.facing * 80, s.y - 48);
       RetroAudio.play('rocket');
     }
-    if (this.isDown('down') && jump) this._exitSlug();
+    if (this.isDown('down') && (jump || gren)) this._exitSlug();
   }
 
   _enterSlug() {

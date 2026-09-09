@@ -11,68 +11,116 @@ html, body {
     font-family: "Courier New", monospace;
     min-height: 100vh;
     overflow-x: hidden;
-    overscroll-behavior: none;
-    touch-action: manipulation;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
 }
 .header-bar {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 18px; border-bottom: 2px solid var(--gold);
+    padding: 8px 16px; border-bottom: 2px solid var(--gold);
     background: linear-gradient(90deg, #1a0818, #2a1030);
+    z-index: 50;
+    position: relative;
 }
-.title-logo { display: flex; gap: 12px; align-items: center; }
-.apple-icon { font-size: 28px; }
+.title-logo { display: flex; gap: 10px; align-items: center; }
+.apple-icon { font-size: 26px; }
 .game-title {
-    font-size: 22px; letter-spacing: 4px; color: var(--gold);
-    text-shadow: 0 0 12px #f0be2880;
+    font-size: 20px; letter-spacing: 3px; color: var(--gold);
+    text-shadow: 0 0 10px rgba(240, 190, 40, 0.5);
 }
 .badge-seasons { font-size: 10px; color: var(--pink); letter-spacing: 1px; }
-.top-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.top-buttons { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .btn-retro {
-    background: #2a1030; color: var(--gold); border: 2px solid var(--gold);
-    padding: 6px 10px; font-family: inherit; font-size: 11px; cursor: pointer;
+    background: #2a1030; color: var(--gold); border: 1px solid var(--gold);
+    padding: 5px 9px; font-family: inherit; font-size: 11px; cursor: pointer;
+    letter-spacing: 1px; border-radius: 3px;
+    transition: background 0.15s, color 0.15s;
+    user-select: none; -webkit-user-select: none;
+}
+.btn-retro:hover, .btn-retro:active { background: var(--gold); color: #1a0818; }
+
+/* Popup de Anúncio Compacto */
+.ad-popup-modal {
+    position: fixed;
+    top: 54px;
+    right: 12px;
+    z-index: 1000;
+    max-width: 290px;
+    width: calc(100vw - 24px);
+    background: rgba(22, 8, 28, 0.96);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 18px rgba(240, 190, 40, 0.25);
+    padding: 6px 8px 8px;
+    backdrop-filter: blur(8px);
+    animation: fadeInPopup 0.25s ease-out;
+}
+@keyframes fadeInPopup {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.ad-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(240, 190, 40, 0.3);
+}
+.ad-popup-tag {
+    font-size: 9px;
+    color: var(--gold);
     letter-spacing: 1px;
+    font-weight: bold;
 }
-.btn-retro:hover { background: var(--gold); color: #1a0818; }
-.ad-banner-container {
-    max-width: 960px;
-    margin: 14px auto 8px;
-    padding: 8px;
-    background: #16081c;
-    border: 1px solid #4a2060;
-    box-shadow: 0 0 15px rgba(240, 190, 40, 0.15);
-    text-align: center;
-    border-radius: 4px;
-}
-.ad-disclaimer {
+.ad-popup-close {
+    background: #501020;
+    color: #ff90a0;
+    border: 1px solid #ff4060;
+    border-radius: 3px;
+    padding: 2px 7px;
+    font-family: inherit;
     font-size: 10px;
-    letter-spacing: 2px;
-    color: #a090b0;
-    margin-bottom: 6px;
-    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.1s;
 }
-.ad-slot-box {
-    min-height: 90px;
+.ad-popup-close:hover, .ad-popup-close:active {
+    background: #ff4060;
+    color: #fff;
+}
+.ad-popup-body {
+    min-height: 50px;
+    max-height: 80px;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1px dashed rgba(240, 190, 40, 0.3);
-    border-radius: 2px;
-    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    border: 1px dashed rgba(240, 190, 40, 0.25);
 }
-.ad-slot-box ins.adsbygoogle {
-    width: 100%;
-}
+
+/* Container do Jogo */
 .game-wrapper {
-    position: relative; max-width: 960px; margin: 12px auto;
-    border: 3px solid var(--gold); box-shadow: 0 0 40px #f0be2840, inset 0 0 40px #000;
+    position: relative; max-width: 960px; margin: 8px auto;
+    border: 3px solid var(--gold); box-shadow: 0 0 35px rgba(240, 190, 40, 0.25), inset 0 0 40px #000;
     background: #000;
+    touch-action: pan-y;
+}
+#game-canvas-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: pan-y;
 }
 #game-canvas-container canvas {
     display: block;
-    width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
-    touch-action: none;
+    margin: 0 auto;
+    touch-action: pan-y;
     -webkit-touch-callout: none;
     user-select: none;
     -webkit-user-select: none;
@@ -100,145 +148,181 @@ html, body {
     display: inline-block; background: #2a1030; border: 1px solid var(--gold);
     color: var(--gold); padding: 1px 5px; font-size: 10px; margin-right: 2px;
 }
+/* =========================================================
+   CONTROLES DE TOQUE MOBILE (D-PAD EM CRUZ + 2 BOTÕES)
+========================================================= */
 .touch-controls {
     display: none;
-    position: fixed;
-    bottom: max(10px, env(safe-area-inset-bottom, 10px));
-    left: 0;
-    right: 0;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 max(16px, env(safe-area-inset-right, 16px)) 0 max(16px, env(safe-area-inset-left, 16px));
-    z-index: 99;
-    pointer-events: none;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+    z-index: 99;
 }
 
-.touch-controls .dpad-cluster,
-.touch-controls .action-cluster {
-    pointer-events: auto;
-}
-
-.dpad-cluster {
+/* DIRECIONAL EM CRUZ PADRÃO (+) */
+.dpad-cross {
+    position: relative;
+    width: 144px;
+    height: 144px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
 }
 
-.dpad-middle-row {
+.dpad-horizontal-row {
     display: flex;
     align-items: center;
-    gap: 4px;
+    width: 144px;
+    height: 48px;
 }
 
-.dpad-center {
-    width: 46px;
-    height: 46px;
-    background: rgba(30, 10, 36, 0.6);
-    border: 1px solid rgba(240, 190, 40, 0.25);
-    border-radius: 8px;
-}
-
-.touch-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    border: 2px solid var(--gold);
-    background: rgba(42, 16, 48, 0.88);
+.dpad-arm {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #2a1030, #14081c);
     color: var(--gold);
-    font-size: 20px;
-    font-weight: bold;
+    border: 2px solid var(--gold);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(240, 190, 40, 0.2);
+    touch-action: none;
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
-    touch-action: none;
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    transition: transform 0.05s ease, background 0.05s ease;
+    transition: background 0.05s ease, transform 0.05s ease;
 }
 
-.touch-btn:active,
-.touch-btn.active {
+.dpad-up {
+    border-radius: 10px 10px 0 0;
+    border-bottom: none;
+}
+
+.dpad-down {
+    border-radius: 0 0 10px 10px;
+    border-top: none;
+}
+
+.dpad-left {
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+}
+
+.dpad-right {
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+}
+
+.dpad-center {
+    width: 48px;
+    height: 48px;
+    background: #1e0926;
+    position: relative;
+}
+
+.dpad-center::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(240, 190, 40, 0.25);
+    border: 1px solid rgba(240, 190, 40, 0.4);
+}
+
+.dpad-arm:active,
+.dpad-arm.active {
     background: var(--gold) !important;
-    color: #1a0818 !important;
-    transform: scale(0.92);
-    box-shadow: 0 0 16px rgba(240, 190, 40, 0.9);
+    color: #14081c !important;
+    box-shadow: 0 0 14px rgba(240, 190, 40, 0.9) !important;
 }
 
+/* CLUSTER DE AÇÃO: APENAS DOIS BOTÕES (BOMBA E Z) */
 .action-cluster {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
+    align-items: center;
+    gap: 16px;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
 }
 
-.action-top-row {
+.touch-action-btn {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
     display: flex;
-    gap: 12px;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    border: 3px solid;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.25);
+    transition: transform 0.05s ease, filter 0.05s ease;
 }
 
-.action-main-row {
-    display: flex;
-    gap: 12px;
-    align-items: center;
+.btn-bomb {
+    background: radial-gradient(circle at 35% 35%, #b45309, #78350f);
+    border-color: #fde68a;
+    color: #fff;
+    transform: translateY(-8px);
 }
 
-.action-sub-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 16px;
-    background: rgba(42, 16, 48, 0.88);
+.btn-bomb .btn-main-icon {
+    font-size: 24px;
+    line-height: 1;
 }
 
-.action-gren-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #78350f !important;
-    border-color: #f59e0b !important;
-    color: #fef08a !important;
+.btn-shoot {
+    background: radial-gradient(circle at 35% 35%, #be123c, #881337);
+    border-color: #fda4af;
+    color: #fff;
 }
 
-.action-shoot-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #b45309 !important;
-    border-color: #fcd34d !important;
-    color: #fff !important;
-    font-size: 22px;
+.btn-shoot .btn-main-icon {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
 }
 
-.action-jump-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #1e3a8a !important;
-    border-color: #60a5fa !important;
-    color: #fff !important;
-    font-size: 22px;
+.btn-text-sub {
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    opacity: 0.95;
 }
 
-/* Visibility rules */
+.touch-action-btn:active,
+.touch-action-btn.active {
+    transform: scale(0.92) !important;
+    filter: brightness(1.25);
+    box-shadow: 0 0 20px rgba(240, 190, 40, 0.9) !important;
+}
+
+/* =========================================================
+   VISIBILIDADE E RESPONSIVIDADE (PORTRAIT / LANDSCAPE)
+========================================================= */
 @media (max-width: 1024px), (pointer: coarse), (hover: none) {
     .touch-controls { display: flex; }
     .controls-panel { display: none; }
@@ -254,13 +338,12 @@ body.hide-touch-controls .touch-controls {
     display: none !important;
 }
 
-@media (max-width: 800px) {
+/* MODO VERTICAL / RETRATO (PORTRAIT) */
+@media (orientation: portrait) or (max-width: 768px) {
     .header-bar {
         padding: 6px 10px;
-        flex-direction: row;
         flex-wrap: wrap;
         gap: 6px;
-        justify-content: space-between;
     }
     .game-title {
         font-size: 16px;
@@ -276,29 +359,47 @@ body.hide-touch-controls .touch-controls {
         padding: 4px 6px;
         font-size: 10px;
     }
-    .ad-banner-container {
-        margin: 6px 8px;
-        padding: 4px;
-    }
-    .ad-disclaimer {
-        font-size: 9px;
-        margin-bottom: 2px;
-    }
-    .ad-slot-box {
-        min-height: 50px;
-    }
     .game-wrapper {
-        margin: 6px 4px;
+        margin: 4px auto;
         border-width: 2px;
+        width: 100%;
+    }
+    .touch-controls {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        width: 100%;
+        max-width: 480px;
+        margin: 12px auto 28px;
+        padding: 0 16px;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .ad-popup-modal {
+        top: auto;
+        bottom: 84px;
+        right: 12px;
+        max-width: 270px;
     }
 }
 
-@media (max-height: 540px) and (orientation: landscape) {
+/* MODO HORIZONTAL / PAISAGEM (LANDSCAPE) */
+@media (orientation: landscape) and (max-height: 640px) {
     .header-bar {
-        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 3px 10px;
+        background: rgba(22, 8, 28, 0.8);
+        transform: translateY(-85%);
+        transition: transform 0.25s ease;
     }
-    .ad-banner-container {
-        display: none;
+    .header-bar:hover,
+    .header-bar:focus-within {
+        transform: translateY(0);
     }
     .game-wrapper {
         margin: 0 auto;
@@ -316,28 +417,32 @@ body.hide-touch-controls .touch-controls {
         align-items: center;
         justify-content: center;
     }
+    #game-canvas-container canvas {
+        max-height: 100vh !important;
+        width: auto !important;
+    }
     .touch-controls {
-        bottom: 6px;
-        padding: 0 max(12px, env(safe-area-inset-left, 12px)) 0 max(12px, env(safe-area-inset-right, 12px));
+        position: fixed;
+        bottom: max(8px, env(safe-area-inset-bottom, 8px));
+        left: 0;
+        right: 0;
+        padding: 0 max(16px, env(safe-area-inset-right, 16px)) 0 max(16px, env(safe-area-inset-left, 16px));
+        justify-content: space-between;
+        align-items: flex-end;
     }
-    .touch-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 16px;
+    .dpad-cross {
+        transform: scale(0.92);
+        transform-origin: bottom left;
     }
-    .dpad-center {
-        width: 38px;
-        height: 38px;
+    .action-cluster {
+        transform: scale(0.92);
+        transform-origin: bottom right;
     }
-    .action-shoot-btn, .action-jump-btn {
-        width: 52px;
-        height: 52px;
-        font-size: 18px;
-    }
-    .action-sub-btn, .action-gren-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 13px;
+    .ad-popup-modal {
+        top: auto;
+        bottom: 8px;
+        right: 8px;
+        max-width: 240px;
     }
 }
 
