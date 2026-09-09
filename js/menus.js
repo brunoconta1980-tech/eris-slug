@@ -14,7 +14,7 @@ class TitleScene extends Phaser.Scene {
     uiText(this, ERIS.W / 2, 46, 'ERIS SLUG', 48, '#ffe07a');
     uiText(this, ERIS.W / 2, 88, 'PRINCIPIA DISCORDIA', 18, '#ff70c0');
     uiText(this, ERIS.W / 2, 114, 'METAL RUN & GUN  ·  5 MISSÕES  ·  HAIL ERIS', 12, '#c0c0d0');
-    const blink = uiText(this, ERIS.W / 2, 470, 'PRESSIONE ENTER / Z  ·  KALLISTI', 16, '#ffffff');
+    const blink = uiText(this, ERIS.W / 2, 470, 'TOQUE NA TELA OU PRESSIONE ENTER / Z', 16, '#ffffff');
     this.tweens.add({ targets: blink, alpha: 0.2, yoyo: true, repeat: -1, duration: 500 });
     uiText(this, ERIS.W / 2, 510, '© 23 DISCORDIAN YEAR  ·  LEI DOS CINCOS', 10, '#8060a0');
     this.input.keyboard.once('keydown-ENTER', () => this._go());
@@ -31,7 +31,7 @@ class MenuScene extends Phaser.Scene {
     this.add.image(ERIS.W / 2, ERIS.H / 2, 'title_art').setDisplaySize(ERIS.W, ERIS.H).setAlpha(0.45);
     this.add.rectangle(ERIS.W / 2, ERIS.H / 2, ERIS.W, ERIS.H, 0x080010, 0.55);
     uiText(this, ERIS.W / 2, 50, 'ERIS SLUG', 36);
-    uiText(this, ERIS.W / 2, 86, 'SELECIONE O CAOS', 12, '#ff70c0');
+    uiText(this, ERIS.W / 2, 86, 'SELECIONE O CAOS (TOQUE OU TECLADO)', 12, '#ff70c0');
     const P = this.registry.get('progress');
     this.items = [
       { label: 'COMEÇAR JOGO', fn: () => this._start(1) },
@@ -41,7 +41,18 @@ class MenuScene extends Phaser.Scene {
       { label: 'ORÁCULO', fn: () => this._oracle() },
     ];
     this.idx = 0;
-    this.rows = this.items.map((it, i) => uiText(this, ERIS.W / 2, 160 + i * 42, it.label, 20, '#d0d0d0'));
+    this.rows = this.items.map((it, i) => {
+      const r = uiText(this, ERIS.W / 2, 160 + i * 42, it.label, 20, '#d0d0d0');
+      r.setInteractive({ useHandCursor: true });
+      r.on('pointerover', () => { this.idx = i; this._paint(); });
+      r.on('pointerdown', () => {
+        this.idx = i;
+        this._paint();
+        RetroAudio.play('ui');
+        this.items[i].fn();
+      });
+      return r;
+    });
     this._paint();
     this.input.keyboard.on('keydown-UP', () => { this.idx = (this.idx + this.items.length - 1) % this.items.length; this._paint(); RetroAudio.play('ui'); });
     this.input.keyboard.on('keydown-DOWN', () => { this.idx = (this.idx + 1) % this.items.length; this._paint(); RetroAudio.play('ui'); });
@@ -90,6 +101,14 @@ class MissionSelect extends Phaser.Scene {
       const frame = this.add.rectangle(0, 0, 168, 130, 0x000000, 0.2).setStrokeStyle(2, locked ? 0x403050 : 0xf0be28);
       const t = this.add.text(0, 62, locked ? '???' : m.code + '  ' + m.name, { fontFamily: 'monospace', fontSize: 9, color: locked ? '#605070' : '#ffe07a' }).setOrigin(0.5);
       c.add([img, frame, t]); c.locked = locked; c.mid = i + 1;
+      c.setSize(168, 130);
+      c.setInteractive({ useHandCursor: true });
+      c.on('pointerover', () => { this.idx = i; this._paint(); });
+      c.on('pointerdown', () => {
+        this.idx = i;
+        this._paint();
+        this._go();
+      });
       return c;
     });
     this._paint();
@@ -98,7 +117,12 @@ class MissionSelect extends Phaser.Scene {
     this.input.keyboard.on('keydown-ENTER', () => this._go());
     this.input.keyboard.on('keydown-Z', () => this._go());
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Menu'));
-    uiText(this, ERIS.W / 2, 500, '← →  escolher   Z/ENTER  jogar   ESC  voltar', 12, '#a09060');
+
+    const backBtn = uiText(this, ERIS.W / 2, 450, '◀ VOLTAR AO MENU', 16, '#ffe07a');
+    backBtn.setInteractive({ useHandCursor: true });
+    backBtn.on('pointerdown', () => this.scene.start('Menu'));
+
+    uiText(this, ERIS.W / 2, 500, 'Toque no card para jogar ou use os controles', 12, '#a09060');
   }
   _paint() { this.cards.forEach((c, i) => c.setScale(i === this.idx ? 1.08 : 1).setAlpha(c.locked ? 0.4 : 1)); }
   _go() {
@@ -122,11 +146,16 @@ class OptionsScene extends Phaser.Scene {
       { k: 'difficulty', label: 'DIFICULDADE', get: () => DIFFICULTY[P.difficulty].name, cycle: () => { P.difficulty = diffs[(diffs.indexOf(P.difficulty) + 1) % 4]; } },
       { k: 'music', label: 'MÚSICA', get: () => P.music ? 'ON' : 'OFF', cycle: () => { P.music = !P.music; RetroAudio.setMusic(P.music); } },
       { k: 'sfx', label: 'EFEITOS', get: () => P.sfx ? 'ON' : 'OFF', cycle: () => { P.sfx = !P.sfx; RetroAudio.setMute(!P.sfx); } },
-      { k: 'crt', label: 'FILTRO CRT', get: () => P.crt ? 'ON' : 'OFF', cycle: () => { P.crt = !P.crt; document.getElementById('crt-overlay').style.display = P.crt ? 'block' : 'none'; } },
+      { k: 'crt', label: 'FILTRO CRT', get: () => P.crt ? 'ON' : 'OFF', cycle: () => { P.crt = !P.crt; const crtEl = document.getElementById('crt-overlay'); if (crtEl) crtEl.style.display = P.crt ? 'block' : 'none'; } },
       { k: 'shake', label: 'TREME TELA', get: () => P.shake ? 'ON' : 'OFF', cycle: () => { P.shake = !P.shake; } },
     ];
     this.idx = 0;
-    this.rows = this.opts.map((o, i) => uiText(this, ERIS.W / 2, 130 + i * 40, '', 18));
+    this.rows = this.opts.map((o, i) => {
+      const r = uiText(this, ERIS.W / 2, 115 + i * 38, '', 18);
+      r.setInteractive({ useHandCursor: true });
+      r.on('pointerdown', () => { this.idx = i; this._cyc(); });
+      return r;
+    });
     this._paint();
     this.input.keyboard.on('keydown-UP', () => { this.idx = (this.idx + this.opts.length - 1) % this.opts.length; this._paint(); });
     this.input.keyboard.on('keydown-DOWN', () => { this.idx = (this.idx + 1) % this.opts.length; this._paint(); });
@@ -135,10 +164,15 @@ class OptionsScene extends Phaser.Scene {
     this.input.keyboard.on('keydown-ENTER', () => this._cyc());
     this.input.keyboard.on('keydown-Z', () => this._cyc());
     this.input.keyboard.on('keydown-ESC', () => { this._save(); this.scene.start('Menu'); });
-    uiText(this, ERIS.W / 2, 400, 'CONTROLES', 14, '#ff70c0');
-    uiText(this, ERIS.W / 2, 430, '← →  andar    ↑  mirar cima    ↓  agachar    ESPAÇO/C  pular', 11, '#c0c0d0');
-    uiText(this, ERIS.W / 2, 450, 'Z/J  atirar    X/K  granada    ↓+pulo no slug  sair    P pausar', 11, '#c0c0d0');
-    uiText(this, ERIS.W / 2, 500, 'ESC volta e salva', 12, '#a09060');
+
+    uiText(this, ERIS.W / 2, 335, 'CONTROLES', 14, '#ff70c0');
+    uiText(this, ERIS.W / 2, 360, '← → andar    ↑ mirar cima    ↓ agachar    ESPAÇO/C pular', 11, '#c0c0d0');
+    uiText(this, ERIS.W / 2, 380, 'Z atirar    X granada    ↓+pulo sair do slug    P pausar', 11, '#c0c0d0');
+    uiText(this, ERIS.W / 2, 400, 'No celular: use o D-Pad virtual e botões na tela', 11, '#a090b0');
+
+    const backBtn = uiText(this, ERIS.W / 2, 460, '◀ SALVAR E VOLTAR AO MENU', 18, '#ffe07a');
+    backBtn.setInteractive({ useHandCursor: true });
+    backBtn.on('pointerdown', () => { this._save(); this.scene.start('Menu'); });
   }
   _cyc() { this.opts[this.idx].cycle(); this._paint(); RetroAudio.play('ui'); }
   _paint() {
@@ -171,10 +205,13 @@ class BriefingScene extends Phaser.Scene {
     const bdef = BOSSES[spec.boss];
     uiText(this, ERIS.W / 2, 340, 'CHEFE: ' + bdef.title + ' — ' + bdef.subtitle, 14, '#ff8080');
     uiText(this, ERIS.W / 2, 370, '"' + bdef.quote + '"', 12, '#a090b0');
-    const go = uiText(this, ERIS.W / 2, 470, 'Z / ENTER  ·  INICIAR OPERAÇÃO', 16);
+    const go = uiText(this, ERIS.W / 2, 470, 'TOQUE NA TELA OU Z / ENTER PARA INICIAR', 16);
     this.tweens.add({ targets: go, alpha: 0.25, yoyo: true, repeat: -1, duration: 450 });
+    go.setInteractive({ useHandCursor: true });
+    go.on('pointerdown', () => this._go());
     this.input.keyboard.once('keydown-ENTER', () => this._go());
     this.input.keyboard.once('keydown-Z', () => this._go());
+    this.input.once('pointerdown', () => this._go());
   }
   _go() { RetroAudio.play('start'); this.scene.start('Play', { mission: this.mid }); }
 }
@@ -206,10 +243,13 @@ class CompleteScene extends Phaser.Scene {
     fetch('/api/score', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ score: P.score, name: 'ERIS' }) }).catch(() => {});
     const next = this.d.mission >= 5 ? 'Ending' : 'Briefing';
     const arg = this.d.mission >= 5 ? {} : { mission: this.d.mission + 1 };
-    const go = uiText(this, ERIS.W / 2, 460, this.d.mission >= 5 ? 'Z  ·  O DEPOIS' : 'Z  ·  PRÓXIMA MISSÃO', 16);
+    const go = uiText(this, ERIS.W / 2, 460, this.d.mission >= 5 ? 'TOQUE NA TELA OU Z  ·  O DEPOIS' : 'TOQUE NA TELA OU Z  ·  PRÓXIMA MISSÃO', 16);
     this.tweens.add({ targets: go, alpha: 0.25, yoyo: true, repeat: -1, duration: 400 });
+    go.setInteractive({ useHandCursor: true });
+    go.on('pointerdown', () => this.scene.start(next, arg));
     this.input.keyboard.once('keydown-Z', () => this.scene.start(next, arg));
     this.input.keyboard.once('keydown-ENTER', () => this.scene.start(next, arg));
+    this.input.once('pointerdown', () => this.scene.start(next, arg));
   }
 }
 
@@ -218,9 +258,18 @@ class ContinueScene extends Phaser.Scene {
   init(d) { this.play = d.play; this.n = d.continues; this.count = 10; this.done = false; }
   create() {
     this.add.rectangle(0, 0, ERIS.W, ERIS.H, 0x000000, 0.65).setOrigin(0).setScrollFactor(0);
-    uiText(this, ERIS.W / 2, 180, 'CONTINUE?', 36, '#ff4050').setScrollFactor(0);
-    this.num = uiText(this, ERIS.W / 2, 260, '10', 64, '#ffe07a').setScrollFactor(0);
-    uiText(this, ERIS.W / 2, 360, 'Z / ENTER  sim    ESC  não   ·   restam ' + this.n, 14, '#d0d0d0').setScrollFactor(0);
+    uiText(this, ERIS.W / 2, 160, 'CONTINUE?', 38, '#ff4050').setScrollFactor(0);
+    this.num = uiText(this, ERIS.W / 2, 230, '10', 64, '#ffe07a').setScrollFactor(0);
+
+    const yesBtn = uiText(this, ERIS.W / 2 - 130, 320, '[ CONTINUAR ]', 20, '#40ff80').setScrollFactor(0);
+    yesBtn.setInteractive({ useHandCursor: true });
+    yesBtn.on('pointerdown', () => this._yes());
+
+    const noBtn = uiText(this, ERIS.W / 2 + 130, 320, '[ DESISTIR ]', 20, '#ff6070').setScrollFactor(0);
+    noBtn.setInteractive({ useHandCursor: true });
+    noBtn.on('pointerdown', () => this._no());
+
+    uiText(this, ERIS.W / 2, 380, 'Toque em CONTINUAR / Z para sim, DESISTIR / ESC para não · restam ' + this.n, 12, '#d0d0d0').setScrollFactor(0);
     this.timer = this.time.addEvent({ delay: 1000, repeat: 9, callback: () => { this.count--; this.num.setText(String(this.count)); if (this.count <= 0) this._no(); } });
     this.input.keyboard.once('keydown-Z', () => this._yes());
     this.input.keyboard.once('keydown-ENTER', () => this._yes());
@@ -239,9 +288,12 @@ class GameOverScene extends Phaser.Scene {
     uiText(this, ERIS.W / 2, 180, 'GAME OVER', 48, '#ff4050');
     uiText(this, ERIS.W / 2, 250, 'Greyface sorri. A pineal se fecha.', 14, '#a090b0');
     uiText(this, ERIS.W / 2, 300, 'SCORE  ' + String(this.score).padStart(6, '0'), 18);
-    uiText(this, ERIS.W / 2, 420, 'Z  ·  MENU', 16);
+    const go = uiText(this, ERIS.W / 2, 420, 'TOQUE NA TELA OU Z  ·  MENU', 16);
+    go.setInteractive({ useHandCursor: true });
+    go.on('pointerdown', () => this.scene.start('Menu'));
     this.input.keyboard.once('keydown-Z', () => this.scene.start('Menu'));
     this.input.keyboard.once('keydown-ENTER', () => this.scene.start('Menu'));
+    this.input.once('pointerdown', () => this.scene.start('Menu'));
   }
 }
 
@@ -265,8 +317,11 @@ class EndingScene extends Phaser.Scene {
     lines.forEach((l, i) => uiText(this, ERIS.W / 2, 80 + i * 32, l, 16, i > 6 ? '#ffe07a' : '#f0e8ff'));
     const P = this.registry.get('progress');
     uiText(this, ERIS.W / 2, 430, 'SCORE FINAL  ' + String(P.score).padStart(6, '0'), 18);
-    uiText(this, ERIS.W / 2, 490, 'Z  ·  CRÉDITOS', 14);
+    const go = uiText(this, ERIS.W / 2, 490, 'TOQUE NA TELA OU Z  ·  CRÉDITOS', 14);
+    go.setInteractive({ useHandCursor: true });
+    go.on('pointerdown', () => this.scene.start('Credits'));
     this.input.keyboard.once('keydown-Z', () => this.scene.start('Credits'));
+    this.input.once('pointerdown', () => this.scene.start('Credits'));
   }
 }
 
@@ -292,8 +347,12 @@ class CreditsScene extends Phaser.Scene {
       'HAIL ERIS  ·  KALLISTI',
     ];
     lines.forEach((l, i) => uiText(this, ERIS.W / 2, 40 + i * 26, l, i === 0 ? 20 : 13, i === 0 ? '#ffe07a' : '#d0c8e0'));
+    const go = uiText(this, ERIS.W / 2, 490, 'TOQUE NA TELA PARA RETORNAR AO MENU', 13, '#ffe07a');
+    go.setInteractive({ useHandCursor: true });
+    go.on('pointerdown', () => this.scene.start('Menu'));
     this.input.keyboard.once('keydown-ESC', () => this.scene.start('Menu'));
     this.input.keyboard.once('keydown-Z', () => this.scene.start('Menu'));
     this.input.keyboard.once('keydown-ENTER', () => this.scene.start('Menu'));
+    this.input.once('pointerdown', () => this.scene.start('Menu'));
   }
 }

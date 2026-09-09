@@ -177,7 +177,7 @@ class PlayScene extends Phaser.Scene {
 
     this.physics.add.collider(this.player, this.groundGroup);
     this.physics.add.collider(this.player, this.platGroup, null, (p, plat) => {
-      if (this.keys.down.isDown) return false;
+      if (this.isDown('down')) return false;
       return p.body.velocity.y >= 0 && p.y <= plat.body.top + 8;
     });
     this.physics.add.collider(this.enemies, this.groundGroup);
@@ -316,9 +316,33 @@ class PlayScene extends Phaser.Scene {
       this.slug.body.setSize(360, 130).setOffset(76, 110);
       this.physics.add.collider(this.slug, this.groundGroup);
       this.physics.add.overlap(this.player, this.slug, () => {
-        if (!this.inSlug && !this.dead && this.keys.down.isDown) this._enterSlug();
+        if (!this.inSlug && !this.dead && this.isDown('down')) this._enterSlug();
       });
     });
+  }
+
+  isDown(action) {
+    const k = this.keys;
+    const h = this.hold;
+    const v = window.erisVirtualInput;
+    switch(action) {
+      case 'left':
+        return !!(h && h.l) || !!(v && v.left) || !!(k && k.left && (k.left.isDown || (k.a && k.a.isDown)));
+      case 'right':
+        return !!(h && h.r) || !!(v && v.right) || !!(k && k.right && (k.right.isDown || (k.d && k.d.isDown)));
+      case 'up':
+        return !!(h && h.u) || !!(v && v.up) || !!(k && k.up && (k.up.isDown || (k.w && k.w.isDown)));
+      case 'down':
+        return !!(h && h.d) || !!(v && v.down) || !!(k && k.down && (k.down.isDown || (k.s && k.s.isDown)));
+      case 'shoot':
+        return !!(h && h.sh) || !!(v && v.shoot) || !!(k && k.shoot && (k.shoot.isDown || (k.shoot2 && k.shoot2.isDown)));
+      case 'jump':
+        return !!(h && h.jp) || !!(v && v.jump) || !!(k && k.jump && (k.jump.isDown || (k.jump2 && k.jump2.isDown)));
+      case 'gren':
+        return !!(h && h.gr) || !!(v && v.gren) || !!(k && k.gren && (k.gren.isDown || (k.gren2 && k.gren2.isDown)));
+      default:
+        return false;
+    }
   }
 
   _bindInput() {
@@ -329,6 +353,11 @@ class PlayScene extends Phaser.Scene {
       jump: 'SPACE', jump2: 'C', pause: 'P', esc: 'ESC',
     });
     this.hold = { l: false, r: false, u: false, d: false, sh: false, jp: false, gr: false };
+
+    window.currentPlayScene = this;
+    this.events.once('shutdown', () => { if (window.currentPlayScene === this) window.currentPlayScene = null; });
+    this.events.once('destroy', () => { if (window.currentPlayScene === this) window.currentPlayScene = null; });
+
     this.input.keyboard.on('keydown', (e) => {
       const c = e.code || e.key;
       if (c === 'ArrowLeft' || c === 'KeyA' || c === 'a' || c === 'A') this.hold.l = true;
@@ -428,15 +457,18 @@ class PlayScene extends Phaser.Scene {
   _control() {
     const k = this.keys;
     const h = this.hold;
-    const left = h.l || k.left.isDown || k.a.isDown;
-    const right = h.r || k.right.isDown || k.d.isDown;
-    const up = h.u || k.up.isDown || k.w.isDown;
-    const down = h.d || k.down.isDown || k.s.isDown;
-    const jumpDown = h.jpPress || Phaser.Input.Keyboard.JustDown(k.jump) || Phaser.Input.Keyboard.JustDown(k.jump2);
-    h.jpPress = false;
-    const shoot = h.sh || k.shoot.isDown || k.shoot2.isDown;
-    const gren = h.grPress || Phaser.Input.Keyboard.JustDown(k.gren) || Phaser.Input.Keyboard.JustDown(k.gren2);
-    h.grPress = false;
+    const v = window.erisVirtualInput;
+    const left = this.isDown('left');
+    const right = this.isDown('right');
+    const up = this.isDown('up');
+    const down = this.isDown('down');
+    const jumpDown = (h && h.jpPress) || (v && v.jumpPress) || (k && k.jump && Phaser.Input.Keyboard.JustDown(k.jump)) || (k && k.jump2 && Phaser.Input.Keyboard.JustDown(k.jump2));
+    if (h) h.jpPress = false;
+    if (v) v.jumpPress = false;
+    const shoot = this.isDown('shoot');
+    const gren = (h && h.grPress) || (v && v.grenPress) || (k && k.gren && Phaser.Input.Keyboard.JustDown(k.gren)) || (k && k.gren2 && Phaser.Input.Keyboard.JustDown(k.gren2));
+    if (h) h.grPress = false;
+    if (v) v.grenPress = false;
     const p = this.player;
     const grounded = p.body.blocked.down || p.body.touching.down;
     const crouch = down && grounded && !this.inSlug && !up;
@@ -502,7 +534,7 @@ class PlayScene extends Phaser.Scene {
       this._spawnBullet(WEAPONS.rocket, s.x + this.facing * 80, s.y - 48);
       RetroAudio.play('rocket');
     }
-    if (this.keys.down.isDown && jump) this._exitSlug();
+    if (this.isDown('down') && jump) this._exitSlug();
   }
 
   _enterSlug() {
@@ -525,7 +557,7 @@ class PlayScene extends Phaser.Scene {
     this.shootCD = w.rate;
     this.shootFlash = 90;
     const originX = this.player.x + this.facing * 30;
-    const originY = this.player.y - (this.keys.down.isDown ? 28 : 52);
+    const originY = this.player.y - (this.isDown('down') ? 28 : 52);
     if (this.bullets.countActive(true) >= BULLET_CAP - w.count) return;
     for (let i = 0; i < w.count; i++) this._spawnBullet(w, originX, originY, i);
     if (w.id !== 'pistol') this.ammo--;
@@ -769,7 +801,7 @@ class PlayScene extends Phaser.Scene {
     if (!this.spec.water) return;
     if (this.player.x > this.layout.waterFrom && this.player.y > 240) {
       this.player.body.setGravityY(-780);
-      if ((this.keys.up.isDown || this.keys.w.isDown || this.keys.jump.isDown) && !this.dead) {
+      if ((this.isDown('up') || this.isDown('jump')) && !this.dead) {
         this.player.setVelocityY(-170);
       }
     } else this.player.body.setGravityY(0);
@@ -1183,12 +1215,16 @@ class PlayScene extends Phaser.Scene {
     this.paused = !this.paused;
     if (this.paused) {
       this.physics.pause();
-      this.pauseTxt = this.add.text(this.cameras.main.scrollX + ERIS.W / 2, 250, 'PAUSADO\nP continua', {
+      this.pauseTxt = this.add.text(this.cameras.main.scrollX + ERIS.W / 2, 250, 'PAUSADO\nToque na tela ou P para continuar', {
         fontFamily: 'monospace', fontSize: 22, color: '#f0be28', align: 'center', stroke: '#000', strokeThickness: 6,
-      }).setOrigin(0.5).setDepth(80);
+      }).setOrigin(0.5).setDepth(80).setInteractive({ useHandCursor: true });
+      this.pauseTxt.on('pointerdown', () => this._pause());
     } else {
       this.physics.resume();
-      if (this.pauseTxt) this.pauseTxt.destroy();
+      if (this.pauseTxt) {
+        this.pauseTxt.destroy();
+        this.pauseTxt = null;
+      }
     }
   }
 }

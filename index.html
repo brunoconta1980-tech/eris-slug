@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ERIS SLUG: Principia Discordia</title>
     <meta name="description" content="ERIS SLUG: Principia Discordia — Clone estrutural de Metal Slug 5 com tema e lore Discordianista. 5 missões, chefes, armas sagradas e Apple Slug.">
     <meta name="theme-color" content="#0a0014">
@@ -31,6 +31,7 @@
             <button class="btn-retro" id="btn-oracle">✨ ORÁCULO</button>
             <button class="btn-retro" id="btn-crt">📺 CRT</button>
             <button class="btn-retro" id="btn-sound">🔊 SOM</button>
+            <button class="btn-retro" id="btn-touch-toggle">🎮 CONTROLES</button>
             <button class="btn-retro" id="btn-fullscreen">⛶ TELA CHEIA</button>
         </div>
     </header>
@@ -77,17 +78,25 @@
         </div>
     </section>
 
-    <div class="touch-controls">
-        <div class="d-pad">
-            <button class="touch-btn" id="t-left">◀</button>
-            <button class="touch-btn" id="t-down">▼</button>
-            <button class="touch-btn" id="t-up">▲</button>
-            <button class="touch-btn" id="t-right">▶</button>
+    <div class="touch-controls" id="touch-controls">
+        <div class="dpad-cluster" id="dpad-cluster">
+            <button class="touch-btn dpad-btn" id="t-up" data-action="up" aria-label="Cima">▲</button>
+            <div class="dpad-middle-row">
+                <button class="touch-btn dpad-btn" id="t-left" data-action="left" aria-label="Esquerda">◀</button>
+                <div class="dpad-center"></div>
+                <button class="touch-btn dpad-btn" id="t-right" data-action="right" aria-label="Direita">▶</button>
+            </div>
+            <button class="touch-btn dpad-btn" id="t-down" data-action="down" aria-label="Baixo">▼</button>
         </div>
-        <div class="action-buttons">
-            <button class="touch-btn" id="t-gren" style="background:#78350f;">●</button>
-            <button class="touch-btn" id="t-shoot" style="background:#b45309;">Z</button>
-            <button class="touch-btn" id="t-jump" style="background:#1e3a8a;">▲</button>
+        <div class="action-cluster" id="action-cluster">
+            <div class="action-top-row">
+                <button class="touch-btn action-sub-btn" id="t-pause" data-action="pause" aria-label="Pausar">⏸</button>
+                <button class="touch-btn action-gren-btn" id="t-gren" data-action="gren" aria-label="Granada">●</button>
+            </div>
+            <div class="action-main-row">
+                <button class="touch-btn action-shoot-btn" id="t-shoot" data-action="shoot" aria-label="Atirar">Z</button>
+                <button class="touch-btn action-jump-btn" id="t-jump" data-action="jump" aria-label="Pular">▲</button>
+            </div>
         </div>
     </div>
 
@@ -137,23 +146,175 @@
                 console.warn('Google AdSense:', e);
             }
         });
-        function bindTouch(id, code) {
+
+        // Detect touch capability
+        const isTouchCapable = ('ontouchstart' in window) || 
+                               (navigator.maxTouchPoints > 0) || 
+                               window.matchMedia('(pointer: coarse)').matches;
+        if (isTouchCapable) {
+            document.body.classList.add('touch-device');
+        }
+
+        // Toggle virtual controls manually
+        const touchToggleBtn = document.getElementById('btn-touch-toggle');
+        if (touchToggleBtn) {
+            touchToggleBtn.addEventListener('click', () => {
+                const tc = document.getElementById('touch-controls');
+                if (!tc) return;
+                const isHidden = window.getComputedStyle(tc).display === 'none';
+                if (isHidden) {
+                    tc.style.display = 'flex';
+                    document.body.classList.add('touch-device');
+                    document.body.classList.remove('hide-touch-controls');
+                } else {
+                    tc.style.display = 'none';
+                    document.body.classList.add('hide-touch-controls');
+                }
+            });
+        }
+
+        // Global Virtual Input State
+        const erisVirtualInput = {
+            up: false,
+            down: false,
+            left: false,
+            right: false,
+            shoot: false,
+            jump: false,
+            jumpPress: false,
+            gren: false,
+            grenPress: false,
+            pause: false
+        };
+        window.erisVirtualInput = erisVirtualInput;
+
+        const KEY_MAP = {
+            left:  { code: 'ArrowLeft',  key: 'ArrowLeft', keyCode: 37 },
+            right: { code: 'ArrowRight', key: 'ArrowRight', keyCode: 39 },
+            up:    { code: 'ArrowUp',    key: 'ArrowUp',    keyCode: 38 },
+            down:  { code: 'ArrowDown',  key: 'ArrowDown',  keyCode: 40 },
+            jump:  { code: 'Space',      key: ' ',          keyCode: 32 },
+            shoot: { code: 'KeyZ',       key: 'z',          keyCode: 90 },
+            gren:  { code: 'KeyX',       key: 'x',          keyCode: 88 },
+            pause: { code: 'KeyP',       key: 'p',          keyCode: 80 }
+        };
+
+        function triggerKeyEvent(type, mapping) {
+            let evt;
+            try {
+                evt = new KeyboardEvent(type, {
+                    code: mapping.code,
+                    key: mapping.key,
+                    keyCode: mapping.keyCode,
+                    which: mapping.keyCode,
+                    bubbles: true,
+                    cancelable: true
+                });
+                Object.defineProperty(evt, 'keyCode', { get: () => mapping.keyCode });
+                Object.defineProperty(evt, 'which', { get: () => mapping.keyCode });
+            } catch (e) {
+                evt = document.createEvent('Event');
+                evt.initEvent(type, true, true);
+                evt.code = mapping.code;
+                evt.key = mapping.key;
+                evt.keyCode = mapping.keyCode;
+                evt.which = mapping.keyCode;
+            }
+            window.dispatchEvent(evt);
+        }
+
+        function setActionState(action, isDown) {
+            if (action === 'pause') {
+                if (isDown) {
+                    triggerKeyEvent('keydown', KEY_MAP.pause);
+                    triggerKeyEvent('keyup', KEY_MAP.pause);
+                    if (window.currentPlayScene && typeof window.currentPlayScene._pause === 'function') {
+                        window.currentPlayScene._pause();
+                    }
+                }
+                return;
+            }
+
+            const prev = !!erisVirtualInput[action];
+            erisVirtualInput[action] = isDown;
+
+            if (action === 'jump' && isDown && !prev) {
+                erisVirtualInput.jumpPress = true;
+            }
+            if (action === 'gren' && isDown && !prev) {
+                erisVirtualInput.grenPress = true;
+            }
+
+            if (window.currentPlayScene && window.currentPlayScene.hold) {
+                const h = window.currentPlayScene.hold;
+                if (action === 'left') h.l = isDown;
+                if (action === 'right') h.r = isDown;
+                if (action === 'up') h.u = isDown;
+                if (action === 'down') h.d = isDown;
+                if (action === 'shoot') h.sh = isDown;
+                if (action === 'jump') {
+                    if (isDown && !h.jp) h.jpPress = true;
+                    h.jp = isDown;
+                }
+                if (action === 'gren') {
+                    if (isDown && !h.gr) h.grPress = true;
+                    h.gr = isDown;
+                }
+            }
+
+            const mapping = KEY_MAP[action];
+            if (mapping) {
+                triggerKeyEvent(isDown ? 'keydown' : 'keyup', mapping);
+            }
+        }
+
+        function bindVirtualButton(id, action) {
             const el = document.getElementById(id);
             if (!el) return;
-            const down = () => window.dispatchEvent(new KeyboardEvent('keydown', { code, keyCode: 0, bubbles: true }));
-            const up = () => window.dispatchEvent(new KeyboardEvent('keyup', { code, keyCode: 0, bubbles: true }));
-            el.addEventListener('touchstart', e => { e.preventDefault(); down(); });
-            el.addEventListener('touchend', e => { e.preventDefault(); up(); });
-            el.addEventListener('mousedown', down);
-            el.addEventListener('mouseup', up);
+
+            const onStart = (e) => {
+                if (e.cancelable) e.preventDefault();
+                el.classList.add('active');
+                setActionState(action, true);
+            };
+
+            const onEnd = (e) => {
+                if (e && e.cancelable) e.preventDefault();
+                el.classList.remove('active');
+                setActionState(action, false);
+            };
+
+            el.addEventListener('pointerdown', (e) => {
+                try { el.setPointerCapture(e.pointerId); } catch (_) {}
+                onStart(e);
+            });
+            el.addEventListener('pointerup', onEnd);
+            el.addEventListener('pointercancel', onEnd);
+
+            el.addEventListener('touchstart', onStart, { passive: false });
+            el.addEventListener('touchend', onEnd, { passive: false });
+            el.addEventListener('touchcancel', onEnd, { passive: false });
+
+            el.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                return false;
+            });
         }
-        bindTouch('t-left', 'ArrowLeft');
-        bindTouch('t-right', 'ArrowRight');
-        bindTouch('t-down', 'ArrowDown');
-        bindTouch('t-up', 'ArrowUp');
-        bindTouch('t-jump', 'Space');
-        bindTouch('t-shoot', 'KeyZ');
-        bindTouch('t-gren', 'KeyX');
+
+        ['up', 'down', 'left', 'right', 'shoot', 'jump', 'gren', 'pause'].forEach(act => {
+            bindVirtualButton('t-' + act, act);
+        });
+
+        // WebAudio unlock on first user gesture
+        const unlockAudio = () => {
+            if (window.retroAudio && typeof window.retroAudio.unlock === 'function') {
+                window.retroAudio.unlock();
+            }
+            window.removeEventListener('touchstart', unlockAudio);
+            window.removeEventListener('pointerdown', unlockAudio);
+        };
+        window.addEventListener('touchstart', unlockAudio, { passive: true });
+        window.addEventListener('pointerdown', unlockAudio, { passive: true });
     </script>
 </body>
 </html>
